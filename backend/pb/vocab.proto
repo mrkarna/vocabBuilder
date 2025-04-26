@@ -1,0 +1,32 @@
+syntax = "proto3";
+package vocab;
+
+option go_package = "github.com/mrkarna/vocabBuilder/backend/pb/autogen;pb";
+
+import "google/api/annotations.proto";
+
+service VocabService {
+  rpc AddWord(Word) returns (AddResponse) {
+    option (google.api.http) = {
+      post: "/v1/vocab"
+      body: "*"
+    };
+  }
+
+  rpc GetRandomWord(Empty) returns (Word) {
+    option (google.api.http) = {
+      get: "/v1/vocab"
+    };
+  }
+}
+
+message Word {
+  string text = 1;
+  string meaning = 2;
+}
+
+message AddResponse {
+  bool success = 1;
+}
+
+message Empty {}
