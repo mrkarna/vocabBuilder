@@ -11,13 +11,13 @@ protoc \
   ```
 
 ## To start the backend app
-go run backend/cmd/server/main.go
+```go run backend/cmd/server/main.go```
 
 ## To hit the API add vocab API
 ### Add a word (HTTP):
- curl -X POST http://localhost:8080/v1/vocab \
+```curl -X POST http://localhost:8080/v1/vocab \
   -H "Content-Type: application/json" \
-  -d '{"text":"sonder", "meaning":"the realization that everyone has a complex life"}'
+  -d '{"text":"sonder", "meaning":"the realization that everyone has a complex life"}'```
 
 ### Get a random word (HTTP):
-curl http://localhost:8080/v1/vocab
+```curl http://localhost:8080/v1/vocab```

@@ -23,6 +23,8 @@ service VocabService {
 message Word {
   string text = 1;
   string meaning = 2;
+  repeated string synonyms = 3;
+  string example = 4;
 }
 
 message AddResponse {

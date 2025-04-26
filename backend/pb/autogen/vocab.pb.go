@@ -26,6 +26,8 @@ type Word struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Text          string                 `protobuf:"bytes,1,opt,name=text,proto3" json:"text,omitempty"`
 	Meaning       string                 `protobuf:"bytes,2,opt,name=meaning,proto3" json:"meaning,omitempty"`
+	Synonyms      []string               `protobuf:"bytes,3,rep,name=synonyms,proto3" json:"synonyms,omitempty"`
+	Example       string                 `protobuf:"bytes,4,opt,name=example,proto3" json:"example,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -70,6 +72,20 @@ func (x *Word) GetText() string {
 func (x *Word) GetMeaning() string {
 	if x != nil {
 		return x.Meaning
+	}
+	return ""
+}
+
+func (x *Word) GetSynonyms() []string {
+	if x != nil {
+		return x.Synonyms
+	}
+	return nil
+}
+
+func (x *Word) GetExample() string {
+	if x != nil {
+		return x.Example
 	}
 	return ""
 }
@@ -158,10 +174,12 @@ var File_vocab_proto protoreflect.FileDescriptor
 
 const file_vocab_proto_rawDesc = "" +
 	"\n" +
-	"\vvocab.proto\x12\x05vocab\x1a\x1cgoogle/api/annotations.proto\"4\n" +
+	"\vvocab.proto\x12\x05vocab\x1a\x1cgoogle/api/annotations.proto\"j\n" +
 	"\x04Word\x12\x12\n" +
 	"\x04text\x18\x01 \x01(\tR\x04text\x12\x18\n" +
-	"\ameaning\x18\x02 \x01(\tR\ameaning\"'\n" +
+	"\ameaning\x18\x02 \x01(\tR\ameaning\x12\x1a\n" +
+	"\bsynonyms\x18\x03 \x03(\tR\bsynonyms\x12\x18\n" +
+	"\aexample\x18\x04 \x01(\tR\aexample\"'\n" +
 	"\vAddResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\"\a\n" +
 	"\x05Empty2\x8f\x01\n" +
