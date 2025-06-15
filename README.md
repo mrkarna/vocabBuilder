@@ -1,5 +1,5 @@
 ## To compile the backend app
-```
+```bash
 protoc \
   -I backend/pb \
   -I "$(go list -f '{{ .Dir }}' -m github.com/grpc-ecosystem/grpc-gateway/v2)" \
@@ -8,10 +8,12 @@ protoc \
   --go-grpc_out=paths=source_relative:backend/pb/autogen \
   --grpc-gateway_out=paths=source_relative:backend/pb/autogen \
   backend/pb/vocab.proto
-  ```
+```
 
 ## To start the backend app
-```go run backend/cmd/server/main.go```
+```bash
+go run backend/cmd/server/main.go
+```
 
 ## To hit the API add vocab API
 ### Add a word (HTTP):
@@ -28,5 +30,7 @@ curl http://localhost:8080/v1/vocab
 
 
 ## To start the frontend app
+```bash
 cd frontned
 npm run dev
+```
