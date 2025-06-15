@@ -1,4 +1,4 @@
- ## To compile the backend app
+## To compile the backend app
 ```
 protoc \
   -I backend/pb \
@@ -15,9 +15,18 @@ protoc \
 
 ## To hit the API add vocab API
 ### Add a word (HTTP):
-```curl -X POST http://localhost:8080/v1/vocab \
+```bash
+curl -X POST http://localhost:8080/v1/vocab \
   -H "Content-Type: application/json" \
-  -d '{"text":"sonder", "meaning":"the realization that everyone has a complex life"}'```
+  -d '{"text":"sonder", "meaning":"the realization that everyone has a complex life"}'
+```
 
 ### Get a random word (HTTP):
-```curl http://localhost:8080/v1/vocab```
+```bash
+curl http://localhost:8080/v1/vocab
+```
+
+
+## To start the frontend app
+cd frontned
+npm run dev
