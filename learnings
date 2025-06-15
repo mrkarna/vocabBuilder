@@ -1,0 +1,11 @@
+## What Is SQLite?
+SQLite is a C-language library that implements a small, fast, self-contained, high-reliability, full-featured, SQL database engine. SQLite is the most used database engine in the world. SQLite is built into all mobile phones and most computers and comes bundled inside countless other applications that people use every day. More Information...
+
+- Transactions are atomic, consistent, isolated, and durable (ACID) even after system crashes and power failures.
+- Zero-configuration - no setup or administration needed.
+
+
+## Suggested Uses For SQLite:
+- Database For The Internet Of Things. SQLite is a popular choice for the database engine in cellphones, PDAs, MP3 players, set-top boxes, and other electronic gadgets. SQLite has a small code footprint, makes efficient use of memory, disk space, and disk bandwidth, is highly reliable, and requires no maintenance from a Database Administrator.
+
+

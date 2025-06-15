@@ -13,6 +13,7 @@ require (
 	github.com/go-kit/log v0.2.0 // indirect
 	github.com/go-logfmt/logfmt v0.5.1 // indirect
 	github.com/googleapis/googleapis v0.0.0-20250424233352-2e5f8ba09734 // indirect
+	github.com/mattn/go-sqlite3 v1.14.28 // indirect
 	golang.org/x/net v0.35.0 // indirect
 	golang.org/x/sys v0.30.0 // indirect
 	golang.org/x/text v0.22.0 // indirect
