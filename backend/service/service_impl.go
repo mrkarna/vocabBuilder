@@ -22,7 +22,7 @@ func NewService() VocabService {
 	// Create table if not exists
 	_, err = db.Exec(`CREATE TABLE IF NOT EXISTS words (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
-		text TEXT NOT NULL,
+		text TEXT NOT NULL UNIQUE,
 		meaning TEXT NOT NULL,
 		synonyms TEXT,
 		example TEXT,
@@ -42,6 +42,9 @@ func (s *vocabService) AddWord(ctx context.Context, word Word) (bool, error) {
 	_, err = s.db.ExecContext(ctx, `INSERT INTO words (text, meaning, synonyms, example, created_at) VALUES (?, ?, ?, ?, datetime('now'))`,
 		word.Text, word.Meaning, string(synonymsJSON), word.Example)
 	if err != nil {
+		if err.Error() == "UNIQUE constraint failed: words.text" {
+			return false, errors.New("word already exists")
+		}
 		return false, err
 	}
 	return true, nil
