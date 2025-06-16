@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion9
 const (
 	VocabService_AddWord_FullMethodName       = "/vocab.VocabService/AddWord"
 	VocabService_GetRandomWord_FullMethodName = "/vocab.VocabService/GetRandomWord"
+	VocabService_ListWords_FullMethodName     = "/vocab.VocabService/ListWords"
 )
 
 // VocabServiceClient is the client API for VocabService service.
@@ -29,6 +30,7 @@ const (
 type VocabServiceClient interface {
 	AddWord(ctx context.Context, in *Word, opts ...grpc.CallOption) (*AddResponse, error)
 	GetRandomWord(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Word, error)
+	ListWords(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListWordsResponse, error)
 }
 
 type vocabServiceClient struct {
@@ -59,12 +61,23 @@ func (c *vocabServiceClient) GetRandomWord(ctx context.Context, in *Empty, opts 
 	return out, nil
 }
 
+func (c *vocabServiceClient) ListWords(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListWordsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListWordsResponse)
+	err := c.cc.Invoke(ctx, VocabService_ListWords_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // VocabServiceServer is the server API for VocabService service.
 // All implementations must embed UnimplementedVocabServiceServer
 // for forward compatibility.
 type VocabServiceServer interface {
 	AddWord(context.Context, *Word) (*AddResponse, error)
 	GetRandomWord(context.Context, *Empty) (*Word, error)
+	ListWords(context.Context, *Empty) (*ListWordsResponse, error)
 	mustEmbedUnimplementedVocabServiceServer()
 }
 
@@ -80,6 +93,9 @@ func (UnimplementedVocabServiceServer) AddWord(context.Context, *Word) (*AddResp
 }
 func (UnimplementedVocabServiceServer) GetRandomWord(context.Context, *Empty) (*Word, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetRandomWord not implemented")
+}
+func (UnimplementedVocabServiceServer) ListWords(context.Context, *Empty) (*ListWordsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListWords not implemented")
 }
 func (UnimplementedVocabServiceServer) mustEmbedUnimplementedVocabServiceServer() {}
 func (UnimplementedVocabServiceServer) testEmbeddedByValue()                      {}
@@ -138,6 +154,24 @@ func _VocabService_GetRandomWord_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _VocabService_ListWords_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(VocabServiceServer).ListWords(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: VocabService_ListWords_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(VocabServiceServer).ListWords(ctx, req.(*Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // VocabService_ServiceDesc is the grpc.ServiceDesc for VocabService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -152,6 +186,10 @@ var VocabService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetRandomWord",
 			Handler:    _VocabService_GetRandomWord_Handler,
+		},
+		{
+			MethodName: "ListWords",
+			Handler:    _VocabService_ListWords_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

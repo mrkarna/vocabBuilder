@@ -16,4 +16,5 @@ type Word struct {
 type VocabService interface {
 	AddWord(ctx context.Context, word Word) (bool, error)
 	GetRandomWord(ctx context.Context) (Word, error)
+	ListWords(ctx context.Context) ([]Word, error)
 }

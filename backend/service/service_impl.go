@@ -68,3 +68,22 @@ func (s *vocabService) GetRandomWord(ctx context.Context) (Word, error) {
 	idx := rand.Intn(len(words))
 	return words[idx], nil
 }
+
+func (s *vocabService) ListWords(ctx context.Context) ([]Word, error) {
+	rows, err := s.db.QueryContext(ctx, `SELECT text, meaning, synonyms, example FROM words`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	words := []Word{}
+	for rows.Next() {
+		var w Word
+		var synonymsJSON string
+		if err := rows.Scan(&w.Text, &w.Meaning, &synonymsJSON, &w.Example); err != nil {
+			return nil, err
+		}
+		json.Unmarshal([]byte(synonymsJSON), &w.Synonyms)
+		words = append(words, w)
+	}
+	return words, nil
+}

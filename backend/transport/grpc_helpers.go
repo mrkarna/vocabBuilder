@@ -22,3 +22,7 @@ func encodeGRPCAddWordResponse(_ context.Context, resp interface{}) (interface{}
 func encodeGRPCGetWordResponse(_ context.Context, resp interface{}) (interface{}, error) {
 	return resp, nil
 }
+
+func encodeGRPCListWordsResponse(_ context.Context, resp interface{}) (interface{}, error) {
+	return resp, nil
+}

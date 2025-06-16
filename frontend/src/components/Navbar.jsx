@@ -14,6 +14,9 @@ function Navbar() {
         <Link to="/game" className="text-gray-700 hover:text-purple-600 font-medium">
           🎯 Play Game
         </Link>
+        <Link to="/words" className="text-gray-700 hover:text-purple-600 font-medium">
+          📖 All Words
+        </Link>
       </div>
     </nav>
   );

@@ -3,6 +3,7 @@ import Home from "./pages/Home";
 import AddWord from "./pages/AddWord";
 import Game from "./pages/Game";
 import Navbar from "./components/Navbar";
+import WordsList from "./pages/WordsList";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/add" element={<AddWord />} />
           <Route path="/game" element={<Game />} />
+          <Route path="/words" element={<WordsList />} />
         </Routes>
       </div>
     </Router>

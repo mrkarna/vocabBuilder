@@ -29,9 +29,10 @@ func main() {
 	// Create endpoints
 	addWordEndpoint := endpoint.MakeAddWordEndpoint(svc)
 	getWordEndpoint := endpoint.MakeGetRandomWordEndpoint(svc)
+	listWordsEndpoint := endpoint.MakeListWordsEndpoint(svc)
 
 	// Create gRPC server that wraps endpoints
-	grpcSrv := transport.NewGRPCServer(addWordEndpoint, getWordEndpoint)
+	grpcSrv := transport.NewGRPCServer(addWordEndpoint, getWordEndpoint, listWordsEndpoint)
 
 	// Start gRPC server
 	go func() {
@@ -60,18 +61,18 @@ func main() {
 
 	log.Printf("HTTP REST gateway listening on :%d", *httpPort)
 
-    handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-    	w.Header().Set("Access-Control-Allow-Origin", "*")
-    	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
-    	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
-    	if r.Method == http.MethodOptions {
-    		w.WriteHeader(http.StatusOK)
-    		return
-    	}
-    	mux.ServeHTTP(w, r)
-    })
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+		mux.ServeHTTP(w, r)
+	})
 
-    log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", *httpPort), handler))
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", *httpPort), handler))
 
 }

@@ -78,6 +78,25 @@ func local_request_VocabService_GetRandomWord_0(ctx context.Context, marshaler r
 	return msg, metadata, err
 }
 
+func request_VocabService_ListWords_0(ctx context.Context, marshaler runtime.Marshaler, client VocabServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq Empty
+		metadata runtime.ServerMetadata
+	)
+	io.Copy(io.Discard, req.Body)
+	msg, err := client.ListWords(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_VocabService_ListWords_0(ctx context.Context, marshaler runtime.Marshaler, server VocabServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq Empty
+		metadata runtime.ServerMetadata
+	)
+	msg, err := server.ListWords(ctx, &protoReq)
+	return msg, metadata, err
+}
+
 // RegisterVocabServiceHandlerServer registers the http handlers for service VocabService to "mux".
 // UnaryRPC     :call VocabServiceServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
@@ -123,6 +142,26 @@ func RegisterVocabServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 			return
 		}
 		forward_VocabService_GetRandomWord_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodGet, pattern_VocabService_ListWords_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/vocab.VocabService/ListWords", runtime.WithHTTPPathPattern("/v1/vocab/all"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_VocabService_ListWords_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_VocabService_ListWords_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
 
 	return nil
@@ -198,15 +237,34 @@ func RegisterVocabServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		}
 		forward_VocabService_GetRandomWord_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
+	mux.Handle(http.MethodGet, pattern_VocabService_ListWords_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/vocab.VocabService/ListWords", runtime.WithHTTPPathPattern("/v1/vocab/all"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_VocabService_ListWords_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_VocabService_ListWords_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
 	return nil
 }
 
 var (
 	pattern_VocabService_AddWord_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "vocab"}, ""))
 	pattern_VocabService_GetRandomWord_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "vocab"}, ""))
+	pattern_VocabService_ListWords_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "vocab", "all"}, ""))
 )
 
 var (
 	forward_VocabService_AddWord_0       = runtime.ForwardResponseMessage
 	forward_VocabService_GetRandomWord_0 = runtime.ForwardResponseMessage
+	forward_VocabService_ListWords_0     = runtime.ForwardResponseMessage
 )

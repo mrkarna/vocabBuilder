@@ -170,6 +170,50 @@ func (*Empty) Descriptor() ([]byte, []int) {
 	return file_vocab_proto_rawDescGZIP(), []int{2}
 }
 
+type ListWordsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Words         []*Word                `protobuf:"bytes,1,rep,name=words,proto3" json:"words,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListWordsResponse) Reset() {
+	*x = ListWordsResponse{}
+	mi := &file_vocab_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListWordsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListWordsResponse) ProtoMessage() {}
+
+func (x *ListWordsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_vocab_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListWordsResponse.ProtoReflect.Descriptor instead.
+func (*ListWordsResponse) Descriptor() ([]byte, []int) {
+	return file_vocab_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *ListWordsResponse) GetWords() []*Word {
+	if x != nil {
+		return x.Words
+	}
+	return nil
+}
+
 var File_vocab_proto protoreflect.FileDescriptor
 
 const file_vocab_proto_rawDesc = "" +
@@ -182,10 +226,13 @@ const file_vocab_proto_rawDesc = "" +
 	"\aexample\x18\x04 \x01(\tR\aexample\"'\n" +
 	"\vAddResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\"\a\n" +
-	"\x05Empty2\x8f\x01\n" +
+	"\x05Empty\"6\n" +
+	"\x11ListWordsResponse\x12!\n" +
+	"\x05words\x18\x01 \x03(\v2\v.vocab.WordR\x05words2\xdb\x01\n" +
 	"\fVocabService\x12@\n" +
 	"\aAddWord\x12\v.vocab.Word\x1a\x12.vocab.AddResponse\"\x14\x82\xd3\xe4\x93\x02\x0e:\x01*\"\t/v1/vocab\x12=\n" +
-	"\rGetRandomWord\x12\f.vocab.Empty\x1a\v.vocab.Word\"\x11\x82\xd3\xe4\x93\x02\v\x12\t/v1/vocabB7Z5github.com/mrkarna/vocabBuilder/backend/pb/autogen;pbb\x06proto3"
+	"\rGetRandomWord\x12\f.vocab.Empty\x1a\v.vocab.Word\"\x11\x82\xd3\xe4\x93\x02\v\x12\t/v1/vocab\x12J\n" +
+	"\tListWords\x12\f.vocab.Empty\x1a\x18.vocab.ListWordsResponse\"\x15\x82\xd3\xe4\x93\x02\x0f\x12\r/v1/vocab/allB7Z5github.com/mrkarna/vocabBuilder/backend/pb/autogen;pbb\x06proto3"
 
 var (
 	file_vocab_proto_rawDescOnce sync.Once
@@ -199,22 +246,26 @@ func file_vocab_proto_rawDescGZIP() []byte {
 	return file_vocab_proto_rawDescData
 }
 
-var file_vocab_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_vocab_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_vocab_proto_goTypes = []any{
-	(*Word)(nil),        // 0: vocab.Word
-	(*AddResponse)(nil), // 1: vocab.AddResponse
-	(*Empty)(nil),       // 2: vocab.Empty
+	(*Word)(nil),              // 0: vocab.Word
+	(*AddResponse)(nil),       // 1: vocab.AddResponse
+	(*Empty)(nil),             // 2: vocab.Empty
+	(*ListWordsResponse)(nil), // 3: vocab.ListWordsResponse
 }
 var file_vocab_proto_depIdxs = []int32{
-	0, // 0: vocab.VocabService.AddWord:input_type -> vocab.Word
-	2, // 1: vocab.VocabService.GetRandomWord:input_type -> vocab.Empty
-	1, // 2: vocab.VocabService.AddWord:output_type -> vocab.AddResponse
-	0, // 3: vocab.VocabService.GetRandomWord:output_type -> vocab.Word
-	2, // [2:4] is the sub-list for method output_type
-	0, // [0:2] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	0, // 0: vocab.ListWordsResponse.words:type_name -> vocab.Word
+	0, // 1: vocab.VocabService.AddWord:input_type -> vocab.Word
+	2, // 2: vocab.VocabService.GetRandomWord:input_type -> vocab.Empty
+	2, // 3: vocab.VocabService.ListWords:input_type -> vocab.Empty
+	1, // 4: vocab.VocabService.AddWord:output_type -> vocab.AddResponse
+	0, // 5: vocab.VocabService.GetRandomWord:output_type -> vocab.Word
+	3, // 6: vocab.VocabService.ListWords:output_type -> vocab.ListWordsResponse
+	4, // [4:7] is the sub-list for method output_type
+	1, // [1:4] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_vocab_proto_init() }
@@ -228,7 +279,7 @@ func file_vocab_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_vocab_proto_rawDesc), len(file_vocab_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -37,3 +37,23 @@ func MakeGetRandomWordEndpoint(svc service.VocabService) endpoint.Endpoint {
 		}, nil
 	}
 }
+
+// MakeListWordsEndpoint wraps the ListWords method.
+func MakeListWordsEndpoint(svc service.VocabService) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (interface{}, error) {
+		words, err := svc.ListWords(ctx)
+		if err != nil {
+			return nil, err
+		}
+		resp := &pb.ListWordsResponse{Words: []*pb.Word{}}
+		for _, w := range words {
+			resp.Words = append(resp.Words, &pb.Word{
+				Text:     w.Text,
+				Meaning:  w.Meaning,
+				Synonyms: w.Synonyms,
+				Example:  w.Example,
+			})
+		}
+		return resp, nil
+	}
+}

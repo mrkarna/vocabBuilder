@@ -32,6 +32,14 @@ function Home() {
         >
           🎯 Play Vocab Game
         </button>
+
+        {/* All Words Button */}
+        <button
+          className="bg-purple-600 hover:bg-purple-700 text-white font-bold px-10 py-4 rounded-xl text-2xl transition-all duration-300 transform hover:scale-110 hover:shadow-lg"
+          onClick={() => navigate("/words")}
+        >
+          📖 All Words
+        </button>
       </div>
     </div>
   );

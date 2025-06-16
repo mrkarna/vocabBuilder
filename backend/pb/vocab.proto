@@ -18,6 +18,12 @@ service VocabService {
       get: "/v1/vocab"
     };
   }
+
+  rpc ListWords(Empty) returns (ListWordsResponse) {
+    option (google.api.http) = {
+      get: "/v1/vocab/all"
+    };
+  }
 }
 
 message Word {
@@ -32,3 +38,7 @@ message AddResponse {
 }
 
 message Empty {}
+
+message ListWordsResponse {
+  repeated Word words = 1;
+}

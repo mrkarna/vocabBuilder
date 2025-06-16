@@ -12,12 +12,13 @@ import (
 type grpcServer struct {
 	pb.UnimplementedVocabServiceServer
 
-	addWordHandler        grpc.Handler
-	getRandomWordHandler  grpc.Handler
+	addWordHandler       grpc.Handler
+	getRandomWordHandler grpc.Handler
+	listWordsHandler     grpc.Handler
 }
 
 // NewGRPCServer returns a new gRPC server instance that wraps the endpoints.
-func NewGRPCServer(add endpoint.Endpoint, get endpoint.Endpoint) pb.VocabServiceServer {
+func NewGRPCServer(add endpoint.Endpoint, get endpoint.Endpoint, list endpoint.Endpoint) pb.VocabServiceServer {
 	return &grpcServer{
 		addWordHandler: grpc.NewServer(
 			add,
@@ -28,6 +29,11 @@ func NewGRPCServer(add endpoint.Endpoint, get endpoint.Endpoint) pb.VocabService
 			get,
 			decodeGRPCEmptyRequest,
 			encodeGRPCGetWordResponse,
+		),
+		listWordsHandler: grpc.NewServer(
+			list,
+			decodeGRPCEmptyRequest,
+			encodeGRPCListWordsResponse,
 		),
 	}
 }
@@ -48,4 +54,13 @@ func (s *grpcServer) GetRandomWord(ctx context.Context, req *pb.Empty) (*pb.Word
 		return nil, err
 	}
 	return resp.(*pb.Word), nil
+}
+
+// ListWords gRPC method
+func (s *grpcServer) ListWords(ctx context.Context, req *pb.Empty) (*pb.ListWordsResponse, error) {
+	_, resp, err := s.listWordsHandler.ServeGRPC(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp.(*pb.ListWordsResponse), nil
 }
