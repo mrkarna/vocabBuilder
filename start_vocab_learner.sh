@@ -1,5 +1,3 @@
-## To start both backend and frontend
-```bash
 #!/bin/bash
 
 # Exit on error
