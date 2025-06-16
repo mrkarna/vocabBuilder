@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.6
 // 	protoc        v5.29.3
-// source: vocab.proto
+// source: backend/pb/vocab.proto
 
 package pb
 
@@ -35,7 +35,7 @@ type Word struct {
 
 func (x *Word) Reset() {
 	*x = Word{}
-	mi := &file_vocab_proto_msgTypes[0]
+	mi := &file_backend_pb_vocab_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -47,7 +47,7 @@ func (x *Word) String() string {
 func (*Word) ProtoMessage() {}
 
 func (x *Word) ProtoReflect() protoreflect.Message {
-	mi := &file_vocab_proto_msgTypes[0]
+	mi := &file_backend_pb_vocab_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -60,7 +60,7 @@ func (x *Word) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Word.ProtoReflect.Descriptor instead.
 func (*Word) Descriptor() ([]byte, []int) {
-	return file_vocab_proto_rawDescGZIP(), []int{0}
+	return file_backend_pb_vocab_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *Word) GetText() string {
@@ -107,7 +107,7 @@ type AddResponse struct {
 
 func (x *AddResponse) Reset() {
 	*x = AddResponse{}
-	mi := &file_vocab_proto_msgTypes[1]
+	mi := &file_backend_pb_vocab_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -119,7 +119,7 @@ func (x *AddResponse) String() string {
 func (*AddResponse) ProtoMessage() {}
 
 func (x *AddResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_vocab_proto_msgTypes[1]
+	mi := &file_backend_pb_vocab_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -132,7 +132,7 @@ func (x *AddResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddResponse.ProtoReflect.Descriptor instead.
 func (*AddResponse) Descriptor() ([]byte, []int) {
-	return file_vocab_proto_rawDescGZIP(), []int{1}
+	return file_backend_pb_vocab_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *AddResponse) GetSuccess() bool {
@@ -150,7 +150,7 @@ type Empty struct {
 
 func (x *Empty) Reset() {
 	*x = Empty{}
-	mi := &file_vocab_proto_msgTypes[2]
+	mi := &file_backend_pb_vocab_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -162,7 +162,7 @@ func (x *Empty) String() string {
 func (*Empty) ProtoMessage() {}
 
 func (x *Empty) ProtoReflect() protoreflect.Message {
-	mi := &file_vocab_proto_msgTypes[2]
+	mi := &file_backend_pb_vocab_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -175,7 +175,7 @@ func (x *Empty) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Empty.ProtoReflect.Descriptor instead.
 func (*Empty) Descriptor() ([]byte, []int) {
-	return file_vocab_proto_rawDescGZIP(), []int{2}
+	return file_backend_pb_vocab_proto_rawDescGZIP(), []int{2}
 }
 
 type ListWordsResponse struct {
@@ -187,7 +187,7 @@ type ListWordsResponse struct {
 
 func (x *ListWordsResponse) Reset() {
 	*x = ListWordsResponse{}
-	mi := &file_vocab_proto_msgTypes[3]
+	mi := &file_backend_pb_vocab_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -199,7 +199,7 @@ func (x *ListWordsResponse) String() string {
 func (*ListWordsResponse) ProtoMessage() {}
 
 func (x *ListWordsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_vocab_proto_msgTypes[3]
+	mi := &file_backend_pb_vocab_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -212,7 +212,7 @@ func (x *ListWordsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListWordsResponse.ProtoReflect.Descriptor instead.
 func (*ListWordsResponse) Descriptor() ([]byte, []int) {
-	return file_vocab_proto_rawDescGZIP(), []int{3}
+	return file_backend_pb_vocab_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ListWordsResponse) GetWords() []*Word {
@@ -222,11 +222,11 @@ func (x *ListWordsResponse) GetWords() []*Word {
 	return nil
 }
 
-var File_vocab_proto protoreflect.FileDescriptor
+var File_backend_pb_vocab_proto protoreflect.FileDescriptor
 
-const file_vocab_proto_rawDesc = "" +
+const file_backend_pb_vocab_proto_rawDesc = "" +
 	"\n" +
-	"\vvocab.proto\x12\x05vocab\x1a\x1cgoogle/api/annotations.proto\"\x89\x01\n" +
+	"\x16backend/pb/vocab.proto\x12\x05vocab\x1a\x1cgoogle/api/annotations.proto\"\x89\x01\n" +
 	"\x04Word\x12\x12\n" +
 	"\x04text\x18\x01 \x01(\tR\x04text\x12\x18\n" +
 	"\ameaning\x18\x02 \x01(\tR\ameaning\x12\x1a\n" +
@@ -245,25 +245,25 @@ const file_vocab_proto_rawDesc = "" +
 	"\tListWords\x12\f.vocab.Empty\x1a\x18.vocab.ListWordsResponse\"\x15\x82\xd3\xe4\x93\x02\x0f\x12\r/v1/vocab/allB7Z5github.com/mrkarna/vocabBuilder/backend/pb/autogen;pbb\x06proto3"
 
 var (
-	file_vocab_proto_rawDescOnce sync.Once
-	file_vocab_proto_rawDescData []byte
+	file_backend_pb_vocab_proto_rawDescOnce sync.Once
+	file_backend_pb_vocab_proto_rawDescData []byte
 )
 
-func file_vocab_proto_rawDescGZIP() []byte {
-	file_vocab_proto_rawDescOnce.Do(func() {
-		file_vocab_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_vocab_proto_rawDesc), len(file_vocab_proto_rawDesc)))
+func file_backend_pb_vocab_proto_rawDescGZIP() []byte {
+	file_backend_pb_vocab_proto_rawDescOnce.Do(func() {
+		file_backend_pb_vocab_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_backend_pb_vocab_proto_rawDesc), len(file_backend_pb_vocab_proto_rawDesc)))
 	})
-	return file_vocab_proto_rawDescData
+	return file_backend_pb_vocab_proto_rawDescData
 }
 
-var file_vocab_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
-var file_vocab_proto_goTypes = []any{
+var file_backend_pb_vocab_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_backend_pb_vocab_proto_goTypes = []any{
 	(*Word)(nil),              // 0: vocab.Word
 	(*AddResponse)(nil),       // 1: vocab.AddResponse
 	(*Empty)(nil),             // 2: vocab.Empty
 	(*ListWordsResponse)(nil), // 3: vocab.ListWordsResponse
 }
-var file_vocab_proto_depIdxs = []int32{
+var file_backend_pb_vocab_proto_depIdxs = []int32{
 	0, // 0: vocab.ListWordsResponse.words:type_name -> vocab.Word
 	0, // 1: vocab.VocabService.AddWord:input_type -> vocab.Word
 	2, // 2: vocab.VocabService.GetRandomWord:input_type -> vocab.Empty
@@ -278,26 +278,26 @@ var file_vocab_proto_depIdxs = []int32{
 	0, // [0:1] is the sub-list for field type_name
 }
 
-func init() { file_vocab_proto_init() }
-func file_vocab_proto_init() {
-	if File_vocab_proto != nil {
+func init() { file_backend_pb_vocab_proto_init() }
+func file_backend_pb_vocab_proto_init() {
+	if File_backend_pb_vocab_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_vocab_proto_rawDesc), len(file_vocab_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_backend_pb_vocab_proto_rawDesc), len(file_backend_pb_vocab_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_vocab_proto_goTypes,
-		DependencyIndexes: file_vocab_proto_depIdxs,
-		MessageInfos:      file_vocab_proto_msgTypes,
+		GoTypes:           file_backend_pb_vocab_proto_goTypes,
+		DependencyIndexes: file_backend_pb_vocab_proto_depIdxs,
+		MessageInfos:      file_backend_pb_vocab_proto_msgTypes,
 	}.Build()
-	File_vocab_proto = out.File
-	file_vocab_proto_goTypes = nil
-	file_vocab_proto_depIdxs = nil
+	File_backend_pb_vocab_proto = out.File
+	file_backend_pb_vocab_proto_goTypes = nil
+	file_backend_pb_vocab_proto_depIdxs = nil
 }

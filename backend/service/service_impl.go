@@ -25,7 +25,8 @@ func NewService() VocabService {
 		text TEXT NOT NULL,
 		meaning TEXT NOT NULL,
 		synonyms TEXT,
-		example TEXT
+		example TEXT,
+		created_at TEXT DEFAULT (datetime('now'))
 	)`)
 	if err != nil {
 		panic(err)
@@ -38,7 +39,7 @@ func (s *vocabService) AddWord(ctx context.Context, word Word) (bool, error) {
 	if err != nil {
 		return false, err
 	}
-	_, err = s.db.ExecContext(ctx, `INSERT INTO words (text, meaning, synonyms, example) VALUES (?, ?, ?, ?)`,
+	_, err = s.db.ExecContext(ctx, `INSERT INTO words (text, meaning, synonyms, example, created_at) VALUES (?, ?, ?, ?, datetime('now'))`,
 		word.Text, word.Meaning, string(synonymsJSON), word.Example)
 	if err != nil {
 		return false, err
@@ -47,7 +48,7 @@ func (s *vocabService) AddWord(ctx context.Context, word Word) (bool, error) {
 }
 
 func (s *vocabService) GetRandomWord(ctx context.Context) (Word, error) {
-	rows, err := s.db.QueryContext(ctx, `SELECT text, meaning, synonyms, example FROM words`)
+	rows, err := s.db.QueryContext(ctx, `SELECT text, meaning, synonyms, example, created_at FROM words`)
 	if err != nil {
 		return Word{}, err
 	}
@@ -56,7 +57,7 @@ func (s *vocabService) GetRandomWord(ctx context.Context) (Word, error) {
 	for rows.Next() {
 		var w Word
 		var synonymsJSON string
-		if err := rows.Scan(&w.Text, &w.Meaning, &synonymsJSON, &w.Example); err != nil {
+		if err := rows.Scan(&w.Text, &w.Meaning, &synonymsJSON, &w.Example, &w.CreatedAt); err != nil {
 			return Word{}, err
 		}
 		json.Unmarshal([]byte(synonymsJSON), &w.Synonyms)
@@ -70,7 +71,7 @@ func (s *vocabService) GetRandomWord(ctx context.Context) (Word, error) {
 }
 
 func (s *vocabService) ListWords(ctx context.Context) ([]Word, error) {
-	rows, err := s.db.QueryContext(ctx, `SELECT text, meaning, synonyms, example FROM words`)
+	rows, err := s.db.QueryContext(ctx, `SELECT text, meaning, synonyms, example, created_at FROM words`)
 	if err != nil {
 		return nil, err
 	}
@@ -79,7 +80,7 @@ func (s *vocabService) ListWords(ctx context.Context) ([]Word, error) {
 	for rows.Next() {
 		var w Word
 		var synonymsJSON string
-		if err := rows.Scan(&w.Text, &w.Meaning, &synonymsJSON, &w.Example); err != nil {
+		if err := rows.Scan(&w.Text, &w.Meaning, &synonymsJSON, &w.Example, &w.CreatedAt); err != nil {
 			return nil, err
 		}
 		json.Unmarshal([]byte(synonymsJSON), &w.Synonyms)

@@ -6,10 +6,11 @@ import (
 
 // Word represents a word and its meaning.
 type Word struct {
-	Text     string
-	Meaning  string
-	Synonyms []string
-	Example  string
+	Text      string
+	Meaning   string
+	Synonyms  []string
+	Example   string
+	CreatedAt string // RFC3339 timestamp
 }
 
 // VocabService defines the core logic interface.

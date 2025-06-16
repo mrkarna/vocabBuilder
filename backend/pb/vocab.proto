@@ -31,6 +31,7 @@ message Word {
   string meaning = 2;
   repeated string synonyms = 3;
   string example = 4;
+  string created_at = 5;
 }
 
 message AddResponse {

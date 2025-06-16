@@ -30,10 +30,11 @@ func MakeGetRandomWordEndpoint(svc service.VocabService) endpoint.Endpoint {
 			return nil, err
 		}
 		return &pb.Word{
-			Text:     word.Text,
-			Meaning:  word.Meaning,
-			Synonyms: word.Synonyms,
-			Example:  word.Example,
+			Text:      word.Text,
+			Meaning:   word.Meaning,
+			Synonyms:  word.Synonyms,
+			Example:   word.Example,
+			CreatedAt: word.CreatedAt,
 		}, nil
 	}
 }
@@ -48,10 +49,11 @@ func MakeListWordsEndpoint(svc service.VocabService) endpoint.Endpoint {
 		resp := &pb.ListWordsResponse{Words: []*pb.Word{}}
 		for _, w := range words {
 			resp.Words = append(resp.Words, &pb.Word{
-				Text:     w.Text,
-				Meaning:  w.Meaning,
-				Synonyms: w.Synonyms,
-				Example:  w.Example,
+				Text:      w.Text,
+				Meaning:   w.Meaning,
+				Synonyms:  w.Synonyms,
+				Example:   w.Example,
+				CreatedAt: w.CreatedAt,
 			})
 		}
 		return resp, nil
