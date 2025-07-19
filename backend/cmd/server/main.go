@@ -30,9 +30,11 @@ func main() {
 	addWordEndpoint := endpoint.MakeAddWordEndpoint(svc)
 	getWordEndpoint := endpoint.MakeGetRandomWordEndpoint(svc)
 	listWordsEndpoint := endpoint.MakeListWordsEndpoint(svc)
+	updateWordEndpoint := endpoint.MakeUpdateWordEndpoint(svc)
+	deleteWordEndpoint := endpoint.MakeDeleteWordEndpoint(svc)
 
 	// Create gRPC server that wraps endpoints
-	grpcSrv := transport.NewGRPCServer(addWordEndpoint, getWordEndpoint, listWordsEndpoint)
+	grpcSrv := transport.NewGRPCServer(addWordEndpoint, getWordEndpoint, listWordsEndpoint, updateWordEndpoint, deleteWordEndpoint)
 
 	// Start gRPC server
 	go func() {
@@ -63,7 +65,7 @@ func main() {
 
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
-		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
 		if r.Method == http.MethodOptions {

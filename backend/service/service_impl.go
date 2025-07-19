@@ -91,3 +91,45 @@ func (s *vocabService) ListWords(ctx context.Context) ([]Word, error) {
 	}
 	return words, nil
 }
+
+func (s *vocabService) UpdateWord(ctx context.Context, oldText string, word Word) (bool, error) {
+	synonymsJSON, err := json.Marshal(word.Synonyms)
+	if err != nil {
+		return false, err
+	}
+
+	result, err := s.db.ExecContext(ctx, `UPDATE words SET text = ?, meaning = ?, synonyms = ?, example = ? WHERE text = ?`,
+		word.Text, word.Meaning, string(synonymsJSON), word.Example, oldText)
+	if err != nil {
+		return false, err
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return false, err
+	}
+
+	if rowsAffected == 0 {
+		return false, errors.New("word not found")
+	}
+
+	return true, nil
+}
+
+func (s *vocabService) DeleteWord(ctx context.Context, text string) (bool, error) {
+	result, err := s.db.ExecContext(ctx, `DELETE FROM words WHERE text = ?`, text)
+	if err != nil {
+		return false, err
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return false, err
+	}
+
+	if rowsAffected == 0 {
+		return false, errors.New("word not found")
+	}
+
+	return true, nil
+}

@@ -24,6 +24,19 @@ service VocabService {
       get: "/v1/vocab/all"
     };
   }
+
+  rpc UpdateWord(UpdateWordRequest) returns (AddResponse) {
+    option (google.api.http) = {
+      put: "/v1/vocab/{old_text}"
+      body: "*"
+    };
+  }
+
+  rpc DeleteWord(DeleteWordRequest) returns (AddResponse) {
+    option (google.api.http) = {
+      delete: "/v1/vocab/{text}"
+    };
+  }
 }
 
 message Word {
@@ -42,4 +55,13 @@ message Empty {}
 
 message ListWordsResponse {
   repeated Word words = 1;
+}
+
+message UpdateWordRequest {
+  string old_text = 1;
+  Word word = 2;
+}
+
+message DeleteWordRequest {
+  string text = 1;
 }

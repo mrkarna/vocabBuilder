@@ -59,3 +59,26 @@ func MakeListWordsEndpoint(svc service.VocabService) endpoint.Endpoint {
 		return resp, nil
 	}
 }
+
+// MakeUpdateWordEndpoint wraps the UpdateWord method.
+func MakeUpdateWordEndpoint(svc service.VocabService) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (interface{}, error) {
+		req := request.(*pb.UpdateWordRequest)
+		ok, err := svc.UpdateWord(ctx, req.OldText, service.Word{
+			Text:     req.Word.Text,
+			Meaning:  req.Word.Meaning,
+			Synonyms: req.Word.Synonyms,
+			Example:  req.Word.Example,
+		})
+		return &pb.AddResponse{Success: ok}, err
+	}
+}
+
+// MakeDeleteWordEndpoint wraps the DeleteWord method.
+func MakeDeleteWordEndpoint(svc service.VocabService) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (interface{}, error) {
+		req := request.(*pb.DeleteWordRequest)
+		ok, err := svc.DeleteWord(ctx, req.Text)
+		return &pb.AddResponse{Success: ok}, err
+	}
+}

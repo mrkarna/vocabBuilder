@@ -15,10 +15,12 @@ type grpcServer struct {
 	addWordHandler       grpc.Handler
 	getRandomWordHandler grpc.Handler
 	listWordsHandler     grpc.Handler
+	updateWordHandler    grpc.Handler
+	deleteWordHandler    grpc.Handler
 }
 
 // NewGRPCServer returns a new gRPC server instance that wraps the endpoints.
-func NewGRPCServer(add endpoint.Endpoint, get endpoint.Endpoint, list endpoint.Endpoint) pb.VocabServiceServer {
+func NewGRPCServer(add endpoint.Endpoint, get endpoint.Endpoint, list endpoint.Endpoint, update endpoint.Endpoint, delete endpoint.Endpoint) pb.VocabServiceServer {
 	return &grpcServer{
 		addWordHandler: grpc.NewServer(
 			add,
@@ -34,6 +36,16 @@ func NewGRPCServer(add endpoint.Endpoint, get endpoint.Endpoint, list endpoint.E
 			list,
 			decodeGRPCEmptyRequest,
 			encodeGRPCListWordsResponse,
+		),
+		updateWordHandler: grpc.NewServer(
+			update,
+			decodeGRPCUpdateWordRequest,
+			encodeGRPCAddWordResponse,
+		),
+		deleteWordHandler: grpc.NewServer(
+			delete,
+			decodeGRPCDeleteWordRequest,
+			encodeGRPCAddWordResponse,
 		),
 	}
 }
@@ -63,4 +75,22 @@ func (s *grpcServer) ListWords(ctx context.Context, req *pb.Empty) (*pb.ListWord
 		return nil, err
 	}
 	return resp.(*pb.ListWordsResponse), nil
+}
+
+// UpdateWord gRPC method
+func (s *grpcServer) UpdateWord(ctx context.Context, req *pb.UpdateWordRequest) (*pb.AddResponse, error) {
+	_, resp, err := s.updateWordHandler.ServeGRPC(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp.(*pb.AddResponse), nil
+}
+
+// DeleteWord gRPC method
+func (s *grpcServer) DeleteWord(ctx context.Context, req *pb.DeleteWordRequest) (*pb.AddResponse, error) {
+	_, resp, err := s.deleteWordHandler.ServeGRPC(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp.(*pb.AddResponse), nil
 }

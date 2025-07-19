@@ -15,6 +15,14 @@ func decodeGRPCEmptyRequest(_ context.Context, req interface{}) (interface{}, er
 	return req.(*pb.Empty), nil
 }
 
+func decodeGRPCUpdateWordRequest(_ context.Context, req interface{}) (interface{}, error) {
+	return req.(*pb.UpdateWordRequest), nil
+}
+
+func decodeGRPCDeleteWordRequest(_ context.Context, req interface{}) (interface{}, error) {
+	return req.(*pb.DeleteWordRequest), nil
+}
+
 func encodeGRPCAddWordResponse(_ context.Context, resp interface{}) (interface{}, error) {
 	return resp, nil
 }

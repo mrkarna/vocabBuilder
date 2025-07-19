@@ -4,6 +4,7 @@ import AddWord from "./pages/AddWord";
 import Game from "./pages/Game";
 import Navbar from "./components/Navbar";
 import WordsList from "./pages/WordsList";
+import Edit from "./pages/Edit";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <div className="pt-20"> {/* To push content below the navbar */}
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/edit" element={<Edit />} />
           <Route path="/add" element={<AddWord />} />
           <Route path="/game" element={<Game />} />
           <Route path="/words" element={<WordsList />} />

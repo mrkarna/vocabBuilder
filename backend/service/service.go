@@ -18,4 +18,6 @@ type VocabService interface {
 	AddWord(ctx context.Context, word Word) (bool, error)
 	GetRandomWord(ctx context.Context) (Word, error)
 	ListWords(ctx context.Context) ([]Word, error)
+	UpdateWord(ctx context.Context, oldText string, word Word) (bool, error)
+	DeleteWord(ctx context.Context, text string) (bool, error)
 }

@@ -22,6 +22,8 @@ const (
 	VocabService_AddWord_FullMethodName       = "/vocab.VocabService/AddWord"
 	VocabService_GetRandomWord_FullMethodName = "/vocab.VocabService/GetRandomWord"
 	VocabService_ListWords_FullMethodName     = "/vocab.VocabService/ListWords"
+	VocabService_UpdateWord_FullMethodName    = "/vocab.VocabService/UpdateWord"
+	VocabService_DeleteWord_FullMethodName    = "/vocab.VocabService/DeleteWord"
 )
 
 // VocabServiceClient is the client API for VocabService service.
@@ -31,6 +33,8 @@ type VocabServiceClient interface {
 	AddWord(ctx context.Context, in *Word, opts ...grpc.CallOption) (*AddResponse, error)
 	GetRandomWord(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Word, error)
 	ListWords(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListWordsResponse, error)
+	UpdateWord(ctx context.Context, in *UpdateWordRequest, opts ...grpc.CallOption) (*AddResponse, error)
+	DeleteWord(ctx context.Context, in *DeleteWordRequest, opts ...grpc.CallOption) (*AddResponse, error)
 }
 
 type vocabServiceClient struct {
@@ -71,6 +75,26 @@ func (c *vocabServiceClient) ListWords(ctx context.Context, in *Empty, opts ...g
 	return out, nil
 }
 
+func (c *vocabServiceClient) UpdateWord(ctx context.Context, in *UpdateWordRequest, opts ...grpc.CallOption) (*AddResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AddResponse)
+	err := c.cc.Invoke(ctx, VocabService_UpdateWord_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *vocabServiceClient) DeleteWord(ctx context.Context, in *DeleteWordRequest, opts ...grpc.CallOption) (*AddResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AddResponse)
+	err := c.cc.Invoke(ctx, VocabService_DeleteWord_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // VocabServiceServer is the server API for VocabService service.
 // All implementations must embed UnimplementedVocabServiceServer
 // for forward compatibility.
@@ -78,6 +102,8 @@ type VocabServiceServer interface {
 	AddWord(context.Context, *Word) (*AddResponse, error)
 	GetRandomWord(context.Context, *Empty) (*Word, error)
 	ListWords(context.Context, *Empty) (*ListWordsResponse, error)
+	UpdateWord(context.Context, *UpdateWordRequest) (*AddResponse, error)
+	DeleteWord(context.Context, *DeleteWordRequest) (*AddResponse, error)
 	mustEmbedUnimplementedVocabServiceServer()
 }
 
@@ -96,6 +122,12 @@ func (UnimplementedVocabServiceServer) GetRandomWord(context.Context, *Empty) (*
 }
 func (UnimplementedVocabServiceServer) ListWords(context.Context, *Empty) (*ListWordsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListWords not implemented")
+}
+func (UnimplementedVocabServiceServer) UpdateWord(context.Context, *UpdateWordRequest) (*AddResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateWord not implemented")
+}
+func (UnimplementedVocabServiceServer) DeleteWord(context.Context, *DeleteWordRequest) (*AddResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteWord not implemented")
 }
 func (UnimplementedVocabServiceServer) mustEmbedUnimplementedVocabServiceServer() {}
 func (UnimplementedVocabServiceServer) testEmbeddedByValue()                      {}
@@ -172,6 +204,42 @@ func _VocabService_ListWords_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _VocabService_UpdateWord_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateWordRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(VocabServiceServer).UpdateWord(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: VocabService_UpdateWord_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(VocabServiceServer).UpdateWord(ctx, req.(*UpdateWordRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _VocabService_DeleteWord_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteWordRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(VocabServiceServer).DeleteWord(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: VocabService_DeleteWord_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(VocabServiceServer).DeleteWord(ctx, req.(*DeleteWordRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // VocabService_ServiceDesc is the grpc.ServiceDesc for VocabService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -190,6 +258,14 @@ var VocabService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListWords",
 			Handler:    _VocabService_ListWords_Handler,
+		},
+		{
+			MethodName: "UpdateWord",
+			Handler:    _VocabService_UpdateWord_Handler,
+		},
+		{
+			MethodName: "DeleteWord",
+			Handler:    _VocabService_DeleteWord_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
