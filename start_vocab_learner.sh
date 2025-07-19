@@ -3,6 +3,8 @@
 # Exit on error
 set -e
 
+cd /Users/mkarna/Desktop/personal/github/vocabBuilder
+
 echo "Compiling protobuf files..."
 protoc \
   -I backend/pb \
