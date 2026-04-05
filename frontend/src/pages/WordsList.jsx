@@ -16,7 +16,8 @@ function WordsList() {
   const [search, setSearch] = useState("");
   const [editingWord, setEditingWord] = useState(null);
   const [editForm, setEditForm] = useState({ text: "", meaning: "", synonyms: "", example: "" });
-  const [saveMsg, setSaveMsg] = useState("");
+  const [saveMsg, setSaveMsg] = useState({ text: "", type: "" });
+  const [confirmDelete, setConfirmDelete] = useState(null); // holds the word object to delete
 
   const fetchWords = () => {
     fetch("http://localhost:8080/v1/vocab/all")
@@ -74,15 +75,38 @@ function WordsList() {
         }),
       });
       if (res.ok) {
-        setSaveMsg("Saved!");
+        setSaveMsg({ text: "Word updated!", type: "success" });
         setEditingWord(null);
         fetchWords();
-        setTimeout(() => setSaveMsg(""), 2500);
+        setTimeout(() => setSaveMsg({ text: "", type: "" }), 2500);
       } else {
-        setSaveMsg("Failed to save.");
+        setSaveMsg({ text: "Failed to save.", type: "error" });
       }
     } catch {
-      setSaveMsg("Error saving.");
+      setSaveMsg({ text: "Error saving.", type: "error" });
+    }
+  };
+
+  const handleDelete = (e, word) => {
+    e.stopPropagation();
+    setConfirmDelete(word);
+  };
+
+  const confirmDeleteWord = async () => {
+    const word = confirmDelete;
+    setConfirmDelete(null);
+    try {
+      const res = await fetch(`http://localhost:8080/v1/vocab/${encodeURIComponent(word.text)}`, { method: "DELETE" });
+      if (res.ok) {
+        setSaveMsg({ text: `"${word.text}" deleted.`, type: "success" });
+        setExpandedIndex(null);
+        fetchWords();
+        setTimeout(() => setSaveMsg({ text: "", type: "" }), 2500);
+      } else {
+        setSaveMsg({ text: "Failed to delete.", type: "error" });
+      }
+    } catch {
+      setSaveMsg({ text: "Error deleting.", type: "error" });
     }
   };
 
@@ -160,9 +184,10 @@ function WordsList() {
           </div>
 
           {/* Save message */}
-          {saveMsg && (
-            <div className="w-full max-w-2xl mb-3">
-              <div className="bg-green-500/20 border border-green-500/30 text-green-300 text-sm rounded-xl px-4 py-2">{saveMsg}</div>
+          {saveMsg.text && (
+            <div className={`w-full max-w-2xl mb-3 px-4 py-2.5 rounded-xl text-sm font-medium border animate-fade-in
+              ${saveMsg.type === "success" ? "bg-green-500/15 border-green-500/25 text-green-300" : "bg-red-500/15 border-red-500/25 text-red-300"}`}>
+              {saveMsg.type === "success" ? "✓ " : "✕ "}{saveMsg.text}
             </div>
           )}
 
@@ -287,18 +312,26 @@ function WordsList() {
                             </div>
                           )}
 
-                          {/* Footer: date + edit button */}
+                          {/* Footer: date + actions */}
                           <div className="flex items-center justify-between mt-3">
                             {word.created_at
                               ? <span className="text-[10px] text-white/15">Added {new Date(word.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
                               : <span />
                             }
-                            <button
-                              onClick={e => openEdit(e, word)}
-                              className="flex items-center gap-1.5 px-3 py-1.5 bg-white/8 hover:bg-white/15 border border-white/10 hover:border-white/20 text-white/60 hover:text-white text-xs font-medium rounded-xl transition-all duration-200"
-                            >
-                              ✏️ Edit
-                            </button>
+                            <div className="flex gap-2">
+                              <button
+                                onClick={e => openEdit(e, word)}
+                                className="flex items-center gap-1.5 px-3 py-1.5 bg-white/8 hover:bg-white/15 border border-white/10 hover:border-white/20 text-white/60 hover:text-white text-xs font-medium rounded-xl transition-all duration-200"
+                              >
+                                ✏️ Edit
+                              </button>
+                              <button
+                                onClick={e => handleDelete(e, word)}
+                                className="flex items-center gap-1.5 px-3 py-1.5 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 hover:border-red-500/40 text-red-400 hover:text-red-300 text-xs font-medium rounded-xl transition-all duration-200"
+                              >
+                                🗑 Delete
+                              </button>
+                            </div>
                           </div>
                         </>
                       )}
@@ -317,6 +350,51 @@ function WordsList() {
           </div>
         </div>
       </div>
+
+      {/* Custom delete confirmation modal */}
+      {confirmDelete && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={() => setConfirmDelete(null)}>
+          {/* Backdrop */}
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+
+          {/* Modal */}
+          <div
+            className="relative bg-[#1a0a3e] border border-white/15 rounded-2xl p-6 w-full max-w-sm shadow-2xl shadow-black/50 animate-fade-in"
+            onClick={e => e.stopPropagation()}
+          >
+            {/* Icon */}
+            <div className="w-12 h-12 rounded-2xl bg-red-500/15 border border-red-500/20 flex items-center justify-center text-2xl mx-auto mb-4">
+              🗑
+            </div>
+
+            {/* Text */}
+            <h3 className="text-white font-bold text-lg text-center mb-1">Delete word?</h3>
+            <p className="text-white/40 text-sm text-center mb-1">
+              You're about to delete
+            </p>
+            <p className="text-fuchsia-300 font-semibold text-center text-base mb-5">
+              "{confirmDelete.text}"
+            </p>
+            <p className="text-white/25 text-xs text-center mb-6">This can't be undone.</p>
+
+            {/* Buttons */}
+            <div className="flex gap-3">
+              <button
+                onClick={() => setConfirmDelete(null)}
+                className="flex-1 py-2.5 rounded-xl bg-white/8 hover:bg-white/12 border border-white/10 text-white/60 hover:text-white text-sm font-medium transition-all"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDeleteWord}
+                className="flex-1 py-2.5 rounded-xl bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 hover:border-red-500/50 text-red-300 hover:text-red-200 text-sm font-semibold transition-all"
+              >
+                Yes, delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

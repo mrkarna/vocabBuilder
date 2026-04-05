@@ -7,6 +7,7 @@ function AddWord() {
   const [example, setExample] = useState("");
   const [banner, setBanner] = useState({ type: null, message: "" });
   const [bannerTimeout, setBannerTimeout] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const showBanner = (type, message) => {
     setBanner({ type, message });
@@ -17,6 +18,7 @@ function AddWord() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const payload = {
       text: word,
       meaning,
@@ -30,92 +32,129 @@ function AddWord() {
       body: JSON.stringify(payload),
     });
 
+    setLoading(false);
+
     if (!res.ok) {
       const data = await res.json().catch(() => ({}));
       const errorMsg = (data && (data.error || data.message || JSON.stringify(data))) || "";
       if (errorMsg.toLowerCase().includes("already exists")) {
-        showBanner("error", "❌ This word is already added!");
+        showBanner("error", "This word is already in your collection.");
         return;
       }
-      showBanner("error", "❌ Failed to add word. Please try again.");
+      showBanner("error", "Failed to add word. Please try again.");
       return;
     }
 
-    showBanner("success", "✅ Word added successfully!");
+    showBanner("success", `"${word}" added to your collection!`);
     setWord("");
     setMeaning("");
     setSynonyms("");
     setExample("");
   };
 
-  // Clear banner when user starts typing a new word
   const handleWordChange = (e) => {
     setWord(e.target.value);
     if (banner.type) setBanner({ type: null, message: "" });
   };
 
+  const inputClass = "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/25 focus:outline-none focus:border-violet-500/60 focus:bg-white/8 transition-all duration-200 resize-none";
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-5rem)] bg-gradient-to-r from-pink-500 via-red-400 to-red-500 p-6 text-white">
-      <h1 className="text-5xl font-extrabold mb-8">➕ Add New Word</h1>
+    <div className="relative min-h-[calc(100vh-5rem)] bg-[#260e5c] text-white overflow-hidden flex items-center justify-center p-6">
 
-      {/* Inline Banner */}
-      {banner.type && (
-        <div
-          className={`mb-6 px-6 py-3 rounded-lg shadow-lg text-lg font-semibold transition-all duration-300
-            ${banner.type === "success" ? "bg-green-500 text-white" : "bg-red-500 text-white"}`}
-        >
-          {banner.message}
+      {/* Animated background orbs */}
+      <div className="pointer-events-none fixed inset-0 overflow-hidden">
+        <div className="animate-blob delay-0    absolute -top-32 -left-32  w-[500px] h-[500px] rounded-full bg-violet-500 opacity-40 blur-[80px]" />
+        <div className="animate-blob delay-2000 absolute top-1/3 right-0   w-[400px] h-[400px] rounded-full bg-fuchsia-500 opacity-35 blur-[80px]" />
+        <div className="animate-blob delay-4000 absolute bottom-0 left-1/3 w-[450px] h-[450px] rounded-full bg-pink-500 opacity-35 blur-[80px]" />
+        <div className="animate-blob delay-6000 absolute bottom-10 right-1/4 w-[350px] h-[350px] rounded-full bg-indigo-400 opacity-30 blur-[80px]" />
+      </div>
+
+      <div className="relative z-10 w-full max-w-xl">
+
+        {/* Header */}
+        <div className="mb-8 text-center">
+          <h1 className="text-4xl font-black tracking-tight mb-1">
+            <span className="bg-gradient-to-r from-violet-400 via-fuchsia-400 to-pink-400 bg-clip-text text-transparent">
+              Add New Word
+            </span>
+          </h1>
+          <p className="text-white/30 text-sm">Expand your vocabulary, one word at a time</p>
         </div>
-      )}
 
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col gap-6 w-full max-w-3xl bg-gradient-to-br from-purple-50 via-pink-50 to-white rounded-3xl p-10 shadow-2xl border border-purple-100"
-      >
-        {/* Word Field */}
-        <input
-          type="text"
-          className="p-3 border rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-purple-300 focus:border-purple-400 transition-all duration-200 hover:border-purple-200"
-          placeholder="Enter Word"
-          value={word}
-          onChange={handleWordChange}
-          required
-        />
+        {/* Banner */}
+        {banner.type && (
+          <div className={`mb-5 px-4 py-3 rounded-xl text-sm font-medium border animate-fade-in
+            ${banner.type === "success"
+              ? "bg-green-500/15 border-green-500/25 text-green-300"
+              : "bg-red-500/15 border-red-500/25 text-red-300"}`}>
+            {banner.type === "success" ? "✓ " : "✕ "}{banner.message}
+          </div>
+        )}
 
-        {/* Meaning Field */}
-        <textarea
-          className="p-3 border rounded-lg text-black h-32 resize-none focus:outline-none focus:ring-2 focus:ring-purple-300 focus:border-purple-400 transition-all duration-200 hover:border-purple-200"
-          placeholder="Enter Meaning"
-          value={meaning}
-          onChange={(e) => setMeaning(e.target.value)}
-          required
-        />
+        {/* Form card */}
+        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-2xl">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
 
-        {/* Synonyms Field */}
-        <input
-          type="text"
-          className="p-3 border rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-purple-300 focus:border-purple-400 transition-all duration-200 hover:border-purple-200"
-          placeholder="Enter Synonyms (comma separated)"
-          value={synonyms}
-          onChange={(e) => setSynonyms(e.target.value)}
-        />
+            {/* Word */}
+            <div>
+              <label className="text-[10px] uppercase tracking-[0.15em] text-white/30 block mb-1.5">Word *</label>
+              <input
+                type="text"
+                className={inputClass}
+                placeholder="e.g. serendipity"
+                value={word}
+                onChange={handleWordChange}
+                required
+              />
+            </div>
 
-        {/* Example Sentence */}
-        <textarea
-          className="p-3 border rounded-lg text-black h-24 resize-none focus:outline-none focus:ring-2 focus:ring-purple-300 focus:border-purple-400 transition-all duration-200 hover:border-purple-200"
-          placeholder="Enter Example Sentence"
-          value={example}
-          onChange={(e) => setExample(e.target.value)}
-        />
+            {/* Meaning */}
+            <div>
+              <label className="text-[10px] uppercase tracking-[0.15em] text-white/30 block mb-1.5">Meaning *</label>
+              <textarea
+                className={`${inputClass} h-24`}
+                placeholder="What does it mean?"
+                value={meaning}
+                onChange={(e) => setMeaning(e.target.value)}
+                required
+              />
+            </div>
 
-        {/* Submit Button */}
-        <button
-          type="submit"
-          className="bg-gradient-to-r from-blue-600 to-purple-500 hover:from-blue-700 hover:to-purple-600 text-white font-semibold px-8 py-3 rounded-xl text-lg transition-all duration-200 shadow-md hover:shadow-lg hover:scale-105"
-        >
-          Add Word
-        </button>
-      </form>
+            {/* Synonyms */}
+            <div>
+              <label className="text-[10px] uppercase tracking-[0.15em] text-white/30 block mb-1.5">Synonyms <span className="normal-case text-white/15">(comma separated)</span></label>
+              <input
+                type="text"
+                className={inputClass}
+                placeholder="e.g. luck, chance, fate"
+                value={synonyms}
+                onChange={(e) => setSynonyms(e.target.value)}
+              />
+            </div>
+
+            {/* Example */}
+            <div>
+              <label className="text-[10px] uppercase tracking-[0.15em] text-white/30 block mb-1.5">Example Sentence</label>
+              <textarea
+                className={`${inputClass} h-20`}
+                placeholder="Use it in a sentence..."
+                value={example}
+                onChange={(e) => setExample(e.target.value)}
+              />
+            </div>
+
+            {/* Submit */}
+            <button
+              type="submit"
+              disabled={loading}
+              className="mt-2 w-full py-3 rounded-xl font-semibold text-sm bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:from-violet-400 hover:to-fuchsia-400 text-white shadow-lg shadow-violet-500/25 transition-all duration-200 hover:shadow-violet-500/40 hover:scale-[1.01] disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100"
+            >
+              {loading ? "Adding..." : "+ Add Word"}
+            </button>
+          </form>
+        </div>
+      </div>
     </div>
   );
 }
