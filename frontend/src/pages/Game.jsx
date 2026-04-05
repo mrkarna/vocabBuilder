@@ -7,15 +7,20 @@ function Game() {
 
   const fetchRandomWord = async () => {
     setLoading(true);
-    const res = await fetch("http://localhost:8080/v1/vocab");
-    const data = await res.json();
-    setWord(data);
-    setLoading(false);
-    setRevealed(false); // reset reveal for new word
+    try {
+      const res = await fetch("http://localhost:8080/v1/vocab");
+      const data = await res.json();
+      setWord(data);
+      setRevealed(false);
+    } catch (err) {
+      console.error("Failed to fetch word:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white p-6">
+    <div className="min-h-[calc(100vh-5rem)] flex flex-col items-center justify-center bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white p-6">
       <h1 className="text-4xl font-bold mb-8">🎯 Guess the Meaning</h1>
 
       <button

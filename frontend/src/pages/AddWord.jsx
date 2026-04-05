@@ -55,7 +55,7 @@ function AddWord() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-pink-500 via-red-400 to-red-500 p-6 text-white">
+    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-5rem)] bg-gradient-to-r from-pink-500 via-red-400 to-red-500 p-6 text-white">
       <h1 className="text-5xl font-extrabold mb-8">➕ Add New Word</h1>
 
       {/* Inline Banner */}

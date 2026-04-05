@@ -4,7 +4,7 @@ function Home() {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-white p-6">
+    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-5rem)] bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-white p-6">
       {/* Title with animation */}
       <h1 className="text-6xl font-extrabold mb-4 animate-pulse">
         📚 Vocab Builder

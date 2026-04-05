@@ -8,7 +8,8 @@ function WordsList() {
   useEffect(() => {
     fetch("http://localhost:8080/v1/vocab/all")
       .then((res) => res.json())
-      .then((data) => setWords(data.words || []));
+      .then((data) => setWords(data.words || []))
+      .catch((err) => console.error("Failed to fetch words:", err));
   }, []);
 
   // Sorting logic
@@ -22,9 +23,9 @@ function WordsList() {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-white flex flex-row items-start">
+    <div className="min-h-[calc(100vh-5rem)] bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-white flex flex-row items-start">
       {/* Sidebar */}
-      <div className="w-60 pt-20 pl-8 pr-4">
+      <div className="w-60 sticky top-20 self-start pt-6 pl-8 pr-4">
         <div className="bg-white bg-opacity-20 rounded-xl p-4 shadow mb-8">
           <div className="font-bold text-lg mb-2 text-white">Sort By</div>
           <button
