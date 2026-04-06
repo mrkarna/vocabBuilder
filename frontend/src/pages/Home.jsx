@@ -4,42 +4,53 @@ function Home() {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-5rem)] bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-white p-6">
-      {/* Title with animation */}
-      <h1 className="text-6xl font-extrabold mb-4 animate-pulse">
-        📚 Vocab Builder
-      </h1>
+    <div className="relative min-h-[calc(100vh-5rem)] bg-[#260e5c] text-white overflow-hidden flex flex-col items-center justify-center p-6">
 
-      {/* Subtitle */}
-      <p className="text-xl mb-12 text-white/80">
-        Boost your vocabulary skills in a fun way!
-      </p>
+      {/* Animated background orbs */}
+      <div className="pointer-events-none fixed inset-0 overflow-hidden">
+        <div className="animate-blob delay-0    absolute -top-32 -left-32  w-[500px] h-[500px] rounded-full bg-violet-500 opacity-40 blur-[80px]" />
+        <div className="animate-blob delay-2000 absolute top-1/3 right-0   w-[400px] h-[400px] rounded-full bg-fuchsia-500 opacity-35 blur-[80px]" />
+        <div className="animate-blob delay-4000 absolute bottom-0 left-1/3 w-[450px] h-[450px] rounded-full bg-pink-500 opacity-35 blur-[80px]" />
+        <div className="animate-blob delay-6000 absolute bottom-10 right-1/4 w-[350px] h-[350px] rounded-full bg-indigo-400 opacity-30 blur-[80px]" />
+      </div>
 
-      {/* Buttons */}
-      <div className="flex gap-8">
-        {/* Add Word Button */}
-        <button
-          className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-10 py-4 rounded-xl text-2xl transition-all duration-300 transform hover:scale-110 hover:shadow-lg"
-          onClick={() => navigate("/add")}
-        >
-          ➕ Add Word
-        </button>
+      <div className="relative z-10 flex flex-col items-center">
+        {/* Title */}
+        <div className="text-6xl mb-3">📚</div>
+        <h1 className="text-5xl font-black tracking-tight mb-2">
+          <span className="bg-gradient-to-r from-violet-400 via-fuchsia-400 to-pink-400 bg-clip-text text-transparent">
+            Vocab Builder
+          </span>
+        </h1>
 
-        {/* Play Game Button */}
-        <button
-          className="bg-green-600 hover:bg-green-700 text-white font-bold px-10 py-4 rounded-xl text-2xl transition-all duration-300 transform hover:scale-110 hover:shadow-lg"
-          onClick={() => navigate("/game")}
-        >
-          🎯 Play Vocab Game
-        </button>
+        {/* Subtitle */}
+        <p className="text-white/40 text-lg mb-14">
+          Boost your vocabulary skills in a fun way!
+        </p>
 
-        {/* All Words Button */}
-        <button
-          className="bg-purple-600 hover:bg-purple-700 text-white font-bold px-10 py-4 rounded-xl text-2xl transition-all duration-300 transform hover:scale-110 hover:shadow-lg"
-          onClick={() => navigate("/words")}
-        >
-          📖 All Words
-        </button>
+        {/* Buttons */}
+        <div className="flex gap-4">
+          <button
+            onClick={() => navigate("/add")}
+            className="group bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/25 text-white font-semibold px-8 py-4 rounded-2xl text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-violet-500/10"
+          >
+            <span className="text-xl mr-2">➕</span> Add Word
+          </button>
+
+          <button
+            onClick={() => navigate("/game")}
+            className="group bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:from-violet-400 hover:to-fuchsia-400 text-white font-semibold px-8 py-4 rounded-2xl text-lg transition-all duration-300 hover:scale-105 shadow-lg shadow-violet-500/25 hover:shadow-violet-500/40"
+          >
+            <span className="text-xl mr-2">🎯</span> Play Vocab Game
+          </button>
+
+          <button
+            onClick={() => navigate("/words")}
+            className="group bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/25 text-white font-semibold px-8 py-4 rounded-2xl text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-fuchsia-500/10"
+          >
+            <span className="text-xl mr-2">📖</span> All Words
+          </button>
+        </div>
       </div>
     </div>
   );
